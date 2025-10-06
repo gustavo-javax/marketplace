@@ -6,9 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class Pedido {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    private LocalDate dataCriacao;
+    private LocalDateTime dataCriacao;
 
     private BigDecimal total;
 
@@ -38,5 +37,21 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoItem> items = new ArrayList<>();
+
+    public void addItem(PedidoItem item) {
+        item.setPedido(this);
+        this.items.add(item);
+        calcularTotal();
+    }
+    public void calcularTotal() {
+        if (items == null || items.isEmpty()) {
+            this.total = BigDecimal.ZERO;
+        } else {
+            this.total = items.stream()
+                    .map(item -> item.getPrecoUnitario().multiply(BigDecimal.valueOf(item.getQuantidade())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+    }
+
 
 }

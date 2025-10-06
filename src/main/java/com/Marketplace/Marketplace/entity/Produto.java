@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "produtos")
+@Table(name = "produto")
 
 
 
@@ -37,10 +37,5 @@ public class Produto {
 
 
 
-//    nome VARCHAR(100),
-//    descricao TEXT,
-//    preco DECIMAL(10,2),
-//    estoque INT,
-//    categoria VARCHAR(50)
 
 }

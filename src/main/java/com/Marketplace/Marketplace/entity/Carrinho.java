@@ -28,4 +28,10 @@ public class Carrinho {
     @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CarrinhoItem> items = new ArrayList<>();
 
+    public void addItem(CarrinhoItem item) {
+        item.setCarrinho(this);
+        this.items.add(item);
+    }
+
+
 }

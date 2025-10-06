@@ -21,5 +21,8 @@ public class PedidoItem {
     private Long id;
     private Integer quantidade;
     private BigDecimal precoUnitario;
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", nullable = false)
+    private Pedido pedido;
 
 }

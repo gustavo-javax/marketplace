@@ -22,14 +22,18 @@ public class CarrinhoItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "carrinho_id")
+    @JoinColumn(name = "carrinho_id", nullable = false)
     private Carrinho carrinho;
 
     @ManyToOne
-    @JoinColumn(name = "produto_id")
+    @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
     private Integer quantidade;
     private BigDecimal precoUnitario;
+
+    public BigDecimal calcularSubTotal(){
+        return precoUnitario.multiply(BigDecimal.valueOf(quantidade));
+    }
 
 }
