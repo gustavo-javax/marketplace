@@ -21,7 +21,7 @@ public class CategoriaService {
         return categoriaRepo.save(categoria);
     }
 
-    public List<Categoria> listarTodasCategorias(){
+    public List<Categoria> listarTodas(){
         return categoriaRepo.findAll();
     }
 
