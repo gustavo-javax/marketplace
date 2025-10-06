@@ -8,8 +8,7 @@ CREATE TABLE usuario (
 
 CREATE TABLE categoria (
     id BIGSERIAL PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    descricao TEXT
+    nome VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE produto (
