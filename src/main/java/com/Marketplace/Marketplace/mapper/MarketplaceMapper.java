@@ -3,7 +3,7 @@ package com.Marketplace.Marketplace.mapper;
 import com.Marketplace.Marketplace.dto.*;
 import com.Marketplace.Marketplace.entity.*;
 import org.mapstruct.Mapper;
-import java.util.List;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
