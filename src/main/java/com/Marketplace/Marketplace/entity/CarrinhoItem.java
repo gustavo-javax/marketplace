@@ -1,5 +1,6 @@
 package com.Marketplace.Marketplace.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class CarrinhoItem {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "carrinho_id", nullable = false)
     private Carrinho carrinho;
 

@@ -1,5 +1,6 @@
 package com.Marketplace.Marketplace.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +27,7 @@ public class Carrinho {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "carrinho", cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<CarrinhoItem> itens = new ArrayList<>();
 
     public void addItem(CarrinhoItem item) {

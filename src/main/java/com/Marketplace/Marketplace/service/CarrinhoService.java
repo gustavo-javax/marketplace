@@ -3,11 +3,15 @@ package com.Marketplace.Marketplace.service;
 import com.Marketplace.Marketplace.entity.Carrinho;
 import com.Marketplace.Marketplace.entity.CarrinhoItem;
 import com.Marketplace.Marketplace.entity.Produto;
+import com.Marketplace.Marketplace.entity.Usuario;
 import com.Marketplace.Marketplace.repository.CarrinhoItemRepository;
 import com.Marketplace.Marketplace.repository.CarrinhoRepository;
 import com.Marketplace.Marketplace.repository.ProdutoRepository;
+import com.Marketplace.Marketplace.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +22,14 @@ public class CarrinhoService {
     private final CarrinhoRepository carrinhoRepo;
     private final CarrinhoItemRepository carrinhoItemRepo;
     private final ProdutoRepository produtoRepo;
+    private final UsuarioRepository usuarioRepo;
+
 
     public Carrinho criarCarrinho(Carrinho carrinho){
+        Long usuarioId = carrinho.getUsuario().getId();
+        Usuario usuario = usuarioRepo.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        carrinho.setUsuario(usuario);
         return carrinhoRepo.save(carrinho);
     }
 
@@ -27,8 +37,8 @@ public class CarrinhoService {
         return carrinhoRepo.findAll();
     }
 
-    public Optional<Carrinho> buscarCarrinhoPorId(Long id){
-        return carrinhoRepo.findById(id);
+    public Carrinho buscarCarrinhoPorId(Long id){
+        return carrinhoRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Carrinho nao encontrado"));
     }
 
     public void removerItem(Long itemId){
@@ -57,6 +67,11 @@ public class CarrinhoService {
         carrinho.getItens().add(item);
         carrinho.addItem(item);
         return carrinhoRepo.save(carrinho);
+    }
+
+    public Carrinho buscarPorUsuario(Long usuarioId) {
+        return carrinhoRepo.findByUsuarioId(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Carrinho do usuário não encontrado"));
     }
 
 

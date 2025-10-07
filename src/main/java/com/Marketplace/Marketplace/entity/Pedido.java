@@ -1,6 +1,7 @@
 package com.Marketplace.Marketplace.entity;
 
 import com.Marketplace.Marketplace.entity.enums.StatusPedido;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,7 @@ public class Pedido {
     private StatusPedido status;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<PedidoItem> items = new ArrayList<>();
 
     public void addItem(PedidoItem item) {

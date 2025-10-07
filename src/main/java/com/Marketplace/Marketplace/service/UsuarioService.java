@@ -4,7 +4,9 @@ import com.Marketplace.Marketplace.entity.Usuario;
 import com.Marketplace.Marketplace.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +29,8 @@ public class UsuarioService {
         return usuarioRepo.findAll();
     }
 
-    public Optional<Usuario> buscarPorId(Long id){
-        return usuarioRepo.findById(id);
+    public Usuario buscarPorId(Long id){
+        return usuarioRepo.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Usuario nao encontrado"));
     }
 
     public Usuario atualizarUsuario(Usuario usuario){
