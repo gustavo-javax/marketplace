@@ -1,6 +1,8 @@
 package com.Marketplace.Marketplace.controller;
 
+import com.Marketplace.Marketplace.dto.CarrinhoDTO;
 import com.Marketplace.Marketplace.entity.Carrinho;
+import com.Marketplace.Marketplace.mapper.MarketplaceMapper;
 import com.Marketplace.Marketplace.service.CarrinhoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,37 +19,40 @@ import java.util.List;
 
 public class CarrinhoController {
     private final CarrinhoService carrinhoService;
+    private final MarketplaceMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Carrinho> criar(@RequestBody @Valid Carrinho carrinho) {
+    public ResponseEntity<CarrinhoDTO> criar(@RequestBody @Valid CarrinhoDTO dto) {
+       Carrinho carrinho = mapper.toEntity(dto);
         Carrinho criado = carrinhoService.criarCarrinho(carrinho);
-        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(criado));
     }
 
     @GetMapping
-    public ResponseEntity<List<Carrinho>> listar() {
-        return ResponseEntity.ok(carrinhoService.listarTodosCarrinho());
+    public ResponseEntity<List<CarrinhoDTO>> listar() {
+        List<Carrinho> carrinhos = carrinhoService.listarTodosCarrinho();
+        return ResponseEntity.ok(mapper.toCarrinhoDTOList(carrinhos));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Carrinho> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<CarrinhoDTO> buscarPorId(@PathVariable Long id) {
         Carrinho carrinho = carrinhoService.buscarCarrinhoPorId(id);
-        return ResponseEntity.ok(carrinho);
+        return ResponseEntity.ok(mapper.toDTO(carrinho));
     }
 
     @PostMapping("/{id}/adicionar")
-    public ResponseEntity<Carrinho> adicionarItem(
+    public ResponseEntity<CarrinhoDTO> adicionarItem(
         @PathVariable Long id,
         @RequestParam Long produtoId,
         @RequestParam int quantidade){
 
         Carrinho carrinho = carrinhoService.buscarCarrinhoPorId(id);
         Carrinho atualizado = carrinhoService.adicionarItem(carrinho,produtoId,quantidade);
-        return ResponseEntity.ok(atualizado);
+        return ResponseEntity.ok(mapper.toDTO(atualizado));
     }
 
     @DeleteMapping("/{id}/remover")
-    public ResponseEntity<Void> removerItem(@RequestParam Long itemId){
+    public ResponseEntity<Void> removerItem(@PathVariable Long id, @RequestParam Long itemId){
         carrinhoService.removerItem(itemId);
         return ResponseEntity.noContent().build();
     }

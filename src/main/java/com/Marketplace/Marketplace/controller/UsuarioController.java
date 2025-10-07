@@ -1,6 +1,8 @@
 package com.Marketplace.Marketplace.controller;
 
+import com.Marketplace.Marketplace.dto.UsuarioDTO;
 import com.Marketplace.Marketplace.entity.Usuario;
+import com.Marketplace.Marketplace.mapper.MarketplaceMapper;
 import com.Marketplace.Marketplace.service.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,29 +17,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioController {
     public final UsuarioService usuarioService;
+    private final MarketplaceMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Usuario> criar(@RequestBody @Valid Usuario usuario){
+    public ResponseEntity<UsuarioDTO> criar(@RequestBody @Valid UsuarioDTO dto){
+        Usuario usuario = mapper.toEntity(dto);
         Usuario criado = usuarioService.criarUsuario(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(criado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDTO(criado));
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> listar(){
-        return ResponseEntity.ok(usuarioService.listarTodos());
+    public ResponseEntity<List<UsuarioDTO>> listar(){
+        List<Usuario> usuarios = usuarioService.listarTodos();
+        return ResponseEntity.ok(mapper.toUsuarioDTOList(usuarios));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Long id){
         Usuario usuario = usuarioService.buscarPorId(id);
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok(mapper.toDTO(usuario));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @RequestBody @Valid Usuario usuario){
+    public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioDTO dto){
+        Usuario usuario = mapper.toEntity(dto);
         usuario.setId(id);
         Usuario atualizado = usuarioService.atualizarUsuario(usuario);
-        return ResponseEntity.ok(atualizado);
+        return ResponseEntity.ok(mapper.toDTO(atualizado));
     }
 
     @DeleteMapping("/{id}")
