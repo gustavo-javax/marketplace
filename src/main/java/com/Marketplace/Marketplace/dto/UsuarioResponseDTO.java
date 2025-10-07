@@ -4,11 +4,9 @@ import com.Marketplace.Marketplace.entity.enums.Role;
 import lombok.Data;
 
 @Data
-public class UsuarioDTO {
+public class UsuarioResponseDTO {
     private Long id;
     private String nome;
-    private String senha;
     private String email;
     private Role role;
-
 }

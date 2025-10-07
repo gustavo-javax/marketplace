@@ -3,7 +3,6 @@ package com.Marketplace.Marketplace.mapper;
 import com.Marketplace.Marketplace.dto.*;
 import com.Marketplace.Marketplace.entity.*;
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -41,5 +40,8 @@ public interface MarketplaceMapper {
     PagamentoDTO toDTO(Pagamento pagamento);
     Pagamento toEntity(PagamentoDTO dto);
     List<PagamentoDTO> toPagamentoDTOList(List<Pagamento> pagamentos);
+
+    List<UsuarioResponseDTO> toUsuarioResponseDTOList(List<Usuario> usuarios);
+    UsuarioResponseDTO toResponseDTO(Usuario usuario);
 
 }
