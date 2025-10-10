@@ -16,6 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
@@ -30,15 +33,5 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // PasswordEncoder para criptografia de senhas
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    // AuthenticationManager para autenticação customizada
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
 }
